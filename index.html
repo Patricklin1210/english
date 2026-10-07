@@ -40,7 +40,7 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}}
 :root[data-theme="dark"]{color-scheme:dark}
 *{box-sizing:border-box}
-html,body{height:100%}
+html,body{height:100%;overscroll-behavior:none}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:0}
 button{font:inherit;color:inherit;cursor:pointer}
 button:disabled{opacity:.4;cursor:default}
@@ -64,8 +64,8 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .banner{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
 .banner button{background:none;border:0;color:var(--accent);font-weight:700;padding:0;white-space:nowrap}
 
-.stage{position:relative;height:430px;max-height:60vh;min-height:350px;touch-action:pan-y;user-select:none;-webkit-user-select:none;perspective:1200px}
-.card{position:absolute;inset:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;will-change:transform;touch-action:pan-y}
+.stage{position:relative;height:430px;max-height:60vh;min-height:350px;touch-action:none;user-select:none;-webkit-user-select:none;perspective:1200px}
+.card{position:absolute;inset:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;will-change:transform;touch-action:none}
 .card.ghost{transform:scale(.95) translateY(12px);opacity:.55;box-shadow:none}
 .card.anim{transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .28s}
 .card.flipin{animation:flipin .26s ease-out}
@@ -1038,17 +1038,18 @@ function render(){
 }
 
 // ---------- swipe ----------
+// swipe in any direction: only left vs right matters, so a mostly-vertical swipe that leans left counts as left
 function bindCard(){
   const c=document.getElementById("card");if(!c)return;
   const sk=document.getElementById("stk"),su=document.getElementById("stu");
-  let x0=null,y0=0,dx=0,pid=null,moved=false;
-  c.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;x0=e.clientX;y0=e.clientY;dx=0;moved=false;pid=e.pointerId;c.classList.remove("anim","flipin")});
-  c.addEventListener("pointermove",e=>{if(x0===null||e.pointerId!==pid)return;dx=e.clientX-x0;const dy=e.clientY-y0;
-    if(!moved&&Math.abs(dx)>8&&Math.abs(dx)>Math.abs(dy)){moved=true;try{c.setPointerCapture(pid)}catch(_){}}
-    if(!moved)return;c.style.transform="translateX("+dx+"px) rotate("+(dx/18)+"deg)";
-    const a=Math.min(1,Math.abs(dx)/100);sk.style.opacity=dx>0?a:0;su.style.opacity=dx<0?a:0});
-  const end=e=>{if(x0===null)return;x0=null;
-    if(moved&&Math.abs(dx)>90){fly(dx>0?"k":"u");return}
+  let x0=null,y0=0,dx=0,dy=0,pid=null,moved=false;
+  c.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;x0=e.clientX;y0=e.clientY;dx=dy=0;moved=false;pid=e.pointerId;c.classList.remove("anim","flipin");try{c.setPointerCapture(pid)}catch(_){}});
+  c.addEventListener("pointermove",e=>{if(x0===null||e.pointerId!==pid)return;dx=e.clientX-x0;dy=e.clientY-y0;
+    if(!moved&&Math.hypot(dx,dy)>10)moved=true;
+    if(!moved)return;c.style.transform="translate("+dx+"px,"+(dy*0.35)+"px) rotate("+(dx/18)+"deg)";
+    const a=Math.abs(dx)<4?0:Math.min(1,Math.hypot(dx,dy)/90);sk.style.opacity=dx>0?a:0;su.style.opacity=dx<0?a:0});
+  const end=e=>{if(x0===null||e.pointerId!==pid)return;x0=null;
+    if(moved&&Math.hypot(dx,dy)>70&&Math.abs(dx)>=4){fly(dx>0?"k":"u");return}
     c.classList.add("anim");c.style.transform="";sk.style.opacity=0;su.style.opacity=0;
     if(!moved&&e.type==="pointerup")flip()};
   c.addEventListener("pointerup",end);c.addEventListener("pointercancel",end);
