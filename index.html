@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0d1a2f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png">
 <title>每日英文</title>
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{padding:0!important}body{margin:0;position:fixed!important;top:0;left:0;right:0;height:var(--apph,100%)!important;padding-top:env(safe-area-inset-top,0px)!important;padding-bottom:0!important}img{max-width:100%}[hidden]{display:none!important}</style>
 <script>window.STANDALONE_BUILD=true</script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -39,13 +39,18 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}}
 :root[data-theme="dark"]{color-scheme:dark}
-*{box-sizing:border-box}
-html,body{height:100%;overscroll-behavior:none}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:0}
+*{box-sizing:border-box;touch-action:pan-x pan-y}
+html{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;height:var(--apph,100%);box-sizing:border-box;overflow:hidden;overscroll-behavior:none}
+body{height:100%;overflow:hidden;overscroll-behavior:none;display:flex;flex-direction:column}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;padding-inline:0;padding-block:0}
 button{font:inherit;color:inherit;cursor:pointer}
 button:disabled{opacity:.4;cursor:default}
 button:focus-visible,input:focus-visible,textarea:focus-visible,.card:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.app{max-width:540px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-bottom:88px}
+.app{flex:1;min-height:0;width:100%;max-width:572px;margin:0 auto;display:flex;flex-direction:column;padding-inline:16px}
+#view{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:none;-webkit-overflow-scrolling:touch;padding-bottom:14px}
+#view.fill{display:flex;flex-direction:column;overflow:hidden;padding-bottom:8px}
+#view.fill .stage{flex:1;height:auto;max-height:none;min-height:220px}
+#view.fill .actions{margin-top:10px}
 header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px 4px}
 .brand{font-family:var(--f-display);font-weight:800;font-size:20px}
 .brand small{display:block;font-family:var(--f-mono);font-weight:400;font-size:11px;color:var(--muted);letter-spacing:.04em}
@@ -96,8 +101,8 @@ header.top{display:flex;align-items:center;justify-content:space-between;gap:12p
 .say{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:7px 12px;font-size:13px;flex:0 0 auto}
 .say svg{width:16px;height:16px}
 .stamp{position:absolute;top:50px;padding:4px 12px;border:2px solid;border-radius:6px;font-weight:700;font-size:20px;opacity:0;pointer-events:none;letter-spacing:.05em;background:var(--surface)}
-.stamp.k{left:16px;color:var(--know);border-color:var(--know);transform:rotate(-8deg)}
-.stamp.u{right:16px;color:var(--unk);border-color:var(--unk);transform:rotate(8deg)}
+.stamp.k{right:16px;color:var(--know);border-color:var(--know);transform:rotate(8deg)}
+.stamp.u{left:16px;color:var(--unk);border-color:var(--unk);transform:rotate(-8deg)}
 
 .actions{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin-top:14px;align-items:center}
 .btn{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px}
@@ -188,6 +193,7 @@ h3.sec span{font-family:var(--f-mono);font-weight:400;font-size:12px;color:var(-
 .tabs2 button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 input[type=search],input[type=text],textarea{width:100%;font:inherit;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 textarea{min-height:110px;font-family:var(--f-mono);font-size:13px}
+@media (pointer:coarse){input,textarea,select{font-size:16px!important}}
 .form{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
 .form label{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
 .form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -259,13 +265,13 @@ details.grp .gl{padding:0 14px 12px;display:flex;flex-direction:column;gap:8px}
 .callegend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:8px}
 .callegend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:4px;vertical-align:middle}
 
-nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.tabs{flex:0 0 auto;position:relative;background:var(--surface);border-top:1px solid var(--line);padding-bottom:calc(env(safe-area-inset-bottom,0px) * 0.25);z-index:5}
 nav.tabs .in{max-width:540px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
-nav.tabs button{border:0;background:none;padding:9px 2px 10px;font-size:11px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;white-space:nowrap}
+nav.tabs button{border:0;background:none;padding:6px 2px 2px;font-size:11px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;white-space:nowrap}
 nav.tabs button svg{width:20px;height:20px}
 nav.tabs button[aria-current="page"]{color:var(--accent);font-weight:700}
 nav.tabs .badge{position:absolute;top:5px;left:calc(50% + 6px);background:var(--unk);color:var(--surface);font-family:var(--f-mono);font-size:10px;border-radius:999px;padding:0 5px;line-height:15px}
-.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:10px;font-size:13px;z-index:9;opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100% - 32px)}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:10px;font-size:13px;z-index:9;opacity:0;transition:opacity .2s;pointer-events:none;max-width:calc(100% - 32px)}
 .toast.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.card.anim{transition:none}.card.flipin{animation:none}}
 @media (max-width:380px){.prow{grid-template-columns:80px 1fr}}
@@ -458,7 +464,11 @@ const INT={1:1,2:2,3:4,4:7,5:15};
 // the standalone build (own website + Google login) sets window.STANDALONE_BUILD before this script
 const STANDALONE=!!window.STANDALONE_BUILD;
 let LS=STANDALONE?"daily-english-local":"shopfloor-english-v1";
-let fbUser=null;
+let fbUser=null,fbAuthKnown=false;
+const APP_VER="10/07-d";
+const LASTUID="daily-english-lastuid";
+function lastUid(){try{return localStorage.getItem(LASTUID)||""}catch(_){return ""}}
+function setLastUid(u){try{u?localStorage.setItem(LASTUID,u):localStorage.removeItem(LASTUID)}catch(_){}}
 const blank=()=>({v:3,u:0,p:{},custom:[],day:null,hist:{},streak:{last:"",n:0},log:{},time:{},fav:{w:{},g:{}},G:{r:{}},
   settings:{count:10,courses:["daily","toeic","ielts"],level:1,auto:false,gLevel:0,gType:"all",gOrder:"rand",chart:"d"}});
 function normalize(o){
@@ -601,7 +611,7 @@ function undo(){if(!undoSnap)return;S=normalize(JSON.parse(undoSnap.S));mode=und
 function startSession(type,ids){
   ids=ids||(type==="review"?dueIds():unknownIds());
   if(!ids.length){toast(type==="review"?"今天沒有要複習的字":"沒有可以練習的字");return}
-  sess={type,ids:shuffle(ids),i:0,res:{}};mode=type==="review"?"review":"practice";tab="today";flipped=false;undoSnap=null;quiz=null;render();scrollTo(0,0);
+  sess={type,ids:shuffle(ids),i:0,res:{}};mode=type==="review"?"review":"practice";tab="today";flipped=false;undoSnap=null;quiz=null;render();toTop();
 }
 function endSession(){mode="daily";sess=null;undoSnap=null;flipped=false;render()}
 function startQuiz(){
@@ -631,7 +641,7 @@ function startG(kind,type){
   if(!src.length){toast("沒有題目");return}
   src=st.gOrder==="seq"?src.slice().sort((a,b)=>a.i-b.i):shuffle(src);
   if(kind==="new")src=src.slice(0,10);
-  gs={kind,ids:src.map(g=>g.id),i:0,res:{},states:[]};newQ();tab="grammar";render();scrollTo(0,0);
+  gs={kind,ids:src.map(g=>g.id),i:0,res:{},states:[]};newQ();tab="grammar";render();toTop();
 }
 function newQ(){
   if(gs.i>=gs.ids.length){gs.cur=null;return}
@@ -695,7 +705,7 @@ function gRemark(){const g=GBY.get(gs.ids[gs.i]),c=gs.cur,got=c.placed.map(k=>c.
 function gRedo(){const c=gs.cur;if(c.revealed)c.wrong=true;Object.assign(c,{placed:[],err:null,done:false,ok:false,revealed:false,alt:null,checked:false,tiles:shuffle(c.tiles)});render()}
 function gReveal(){const g=GBY.get(gs.ids[gs.i]),c=gs.cur;if(c.done)return;c.done=true;c.revealed=true;gs.res[g.id]="w";gRecord(g.id,"w");render()}
 function gGo(d){if(!gs)return;const n=gs.i+d;if(n<0){toast("已經是第一題");return}if(n>gs.ids.length)return;gs.i=n;newQ();render()}
-function gNext(){gGo(1);scrollTo(0,0)}
+function gNext(){gGo(1);toTop()}
 
 // ---------- swipe between grammar questions: left = previous, right = next ----------
 function bindGSwipe(){
@@ -788,7 +798,7 @@ function viewToday(){
   let h="";const t=today();
   if(mode!=="daily")h+='<div class="banner"><span>'+(mode==="review"?"生詞複習：會的字熟練度加一格":"練習模式：只練習，不影響複習排程")+'</span><button data-act="endsess">結束</button></div>';
   else{buildDay();const due=dueIds().length;
-    if(STANDALONE&&window.FIREBASE_CONFIG&&!fbUser)h+='<div class="banner"><span>用 Google 登入，進度會存在帳號裡，手機電腦同步</span><button data-act="fblogin">登入</button></div>';if(due&&!quiz)h+='<div class="banner"><span>生詞本有 '+due+' 個字今天該複習</span><button data-act="review">開始複習</button></div>'}
+    if(STANDALONE&&window.FIREBASE_CONFIG&&fbAuthKnown&&!fbUser)h+='<div class="banner"><span>用 Google 登入，進度會存在帳號裡，手機電腦同步</span><button data-act="fblogin">登入</button></div>';if(due&&!quiz)h+='<div class="banner"><span>生詞本有 '+due+' 個字今天該複習</span><button data-act="review">開始複習</button></div>'}
   if(quiz&&mode==="daily")return h+viewQuiz();
   const L=list(),tot=L.ids.length,res=L.res||{};
   const k=Object.values(res).filter(x=>x==="k").length,u=Object.values(res).filter(x=>x==="u").length;
@@ -966,7 +976,7 @@ function viewPlan(){
   h+='<h3 class="sec">預計進度</h3><div class="plan">'+(fi.rem?'<b>'+md(fi.finish)+'（'+wd(fi.finish)+'）學完</b><span>目前的課程與難度還有 '+fi.rem+' 個新字，每天 '+cnt()+' 個，約 '+fi.days+' 天。複習生詞另外算。</span>':'<b>這個難度的新字都學過了</b><span>可以把難度往上調，或加選其他課程。</span>')+'</div>';
   h+=viewCal(fi);
   h+='<h3 class="sec">累積</h3><div class="stats"><div class="stat"><b>'+S.streak.n+'</b><span>連續天數'+(S.streak.last&&S.streak.last<addDays(t,-1)?"（已中斷）":"")+'</span></div><div class="stat"><b>'+Object.keys(S.p).length+'</b><span>看過的字</span></div><div class="stat"><b style="color:var(--know)">'+Object.values(S.p).filter(e=>e.m).length+'</b><span>已經會的字</span></div><div class="stat"><b style="color:var(--unk)">'+unknownIds().length+'</b><span>生詞本</span></div></div>';
-  if(STANDALONE)h+='<h3 class="sec">帳號<span>進度存在 Google 帳號裡</span></h3><div class="list"><div class="setrow">'+(!window.FIREBASE_CONFIG?'<span class="sub">還沒設定 Google 登入，目前進度只存在這台裝置。</span>':fbUser?'<span>'+esc(fbUser.email||fbUser.displayName||"已登入")+'</span><span class="row" style="justify-content:flex-end"><button class="btn small" data-act="fbswitch">切換帳號</button><button class="btn small" data-act="fblogout">登出</button></span>':'<span>還沒登入，進度只存在這台裝置</span><button class="btn small primary" data-act="fblogin">用 Google 登入</button>')+'</div></div>';
+  if(STANDALONE)h+='<h3 class="sec">帳號<span>進度存在 Google 帳號裡</span></h3><div class="list"><div class="setrow">'+(!window.FIREBASE_CONFIG?'<span class="sub">還沒設定 Google 登入，目前進度只存在這台裝置。</span>':fbUser?'<span>'+esc(fbUser.email||fbUser.displayName||"已登入")+'</span><span class="row" style="justify-content:flex-end"><button class="btn small" data-act="fbswitch">切換帳號</button><button class="btn small" data-act="fblogout">登出</button></span>':'<span>還沒登入，進度只存在這台裝置</span><button class="btn small primary" data-act="fblogin">用 Google 登入</button>')+'</div><div class="setrow"><span class="sub">版本 '+APP_VER+'</span></div></div>';
   h+='<h3 class="sec">備份與搬移<span>手機、電腦、雲端版互相搬進度</span></h3><div class="list">'+
     '<div class="setrow"><span>把目前所有進度存成備份</span><span class="row" style="justify-content:flex-end"><button class="btn small" data-act="bkcopy">複製備份碼</button>'+(STANDALONE?'<button class="btn small" data-act="bkfile">下載備份檔</button>':'')+'</span></div>'+
     '<div class="setrow col"><span>匯入備份（會跟這裡的進度合併，不會清掉）</span><textarea id="bkin" placeholder="把備份碼貼在這裡" style="min-height:70px"></textarea><span class="row" style="justify-content:flex-start"><button class="btn small primary" data-act="bkimport">合併匯入</button><label class="btn small" style="cursor:pointer">選備份檔<input type="file" id="bkfilein" accept=".json,application/json,text/plain" hidden></label></span><span class="sub" id="bkmsg"></span></div></div>';
@@ -1024,13 +1034,40 @@ function viewBank(){
   return h;
 }
 
+// iPhone home-screen apps sometimes report a viewport that is shorter than the screen by the status-bar height
+// (only on pages that do not scroll), which lifted the tab bar. Size the app to the real screen height instead.
+let fitMax=0;
+function fitNav(){
+  let h=window.innerHeight;
+  const ios=/iPhone|iPad|iPod/.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+  if(ios){
+    const portrait=matchMedia("(orientation: portrait)").matches;
+    const sh=portrait?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);
+    if(sh>h&&sh-h<=70)h=sh;
+    // never shrink later in the same orientation (iOS reports a shorter height ~0.5s after launch)
+    const key=portrait?1:2;if(fitMax&&fitMax.k===key&&fitMax.h>h&&fitMax.h-h<=70)h=fitMax.h;fitMax={k:key,h};
+  }
+  document.documentElement.style.setProperty("--apph",h+"px");
+  if(window.scrollY||document.documentElement.scrollTop)window.scrollTo(0,0);
+}
+addEventListener("resize",fitNav);addEventListener("orientationchange",()=>{fitMax=0;setTimeout(fitNav,300)});fitNav();
+// iOS may scroll the whole document a little after launch; keep it pinned
+addEventListener("scroll",()=>{if(window.scrollY)window.scrollTo(0,0)},{passive:true});
+if(window.visualViewport)visualViewport.addEventListener("resize",fitNav);
+[100,300,600,1000,2000].forEach(t=>setTimeout(fitNav,t));
+// no pinch / double-tap zoom anywhere
+["gesturestart","gesturechange","gestureend"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+document.addEventListener("dblclick",e=>e.preventDefault(),{passive:false});
+["touchstart","touchmove"].forEach(ev=>document.addEventListener(ev,e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false}));
+function toTop(){const v=document.getElementById("view");if(v)v.scrollTop=0}
 function render(){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===tab?"page":"false"));
   const rv=document.querySelector('nav.tabs [data-tab="review"]');let bd=rv.querySelector(".badge");const due=dueIds().length;
   if(due){if(!bd){bd=document.createElement("span");bd.className="badge";rv.appendChild(bd)}bd.textContent=due}else if(bd)bd.remove();
   const v=document.getElementById("view");
   v.innerHTML=tab==="today"?viewToday():tab==="review"?viewReview():tab==="grammar"?viewGrammar():tab==="plan"?viewPlan():viewBank();
-  justFlipped=false;renderTimebar();
+  v.classList.toggle("fill",tab==="today"&&!!document.getElementById("stage"));
+  justFlipped=false;renderTimebar();fitNav();
   if(tab==="today")bindCard();
   if(tab==="grammar"&&gs&&gs.cur&&!gs.cur.done)bindDrag();
   if(tab==="grammar"&&gs)bindGSwipe();
@@ -1046,7 +1083,7 @@ function bindCard(){
   c.addEventListener("pointerdown",e=>{if(e.target.closest("button"))return;x0=e.clientX;y0=e.clientY;dx=dy=0;moved=false;pid=e.pointerId;c.classList.remove("anim","flipin");try{c.setPointerCapture(pid)}catch(_){}});
   c.addEventListener("pointermove",e=>{if(x0===null||e.pointerId!==pid)return;dx=e.clientX-x0;dy=e.clientY-y0;
     if(!moved&&Math.hypot(dx,dy)>10)moved=true;
-    if(!moved)return;c.style.transform="translate("+dx+"px,"+(dy*0.35)+"px) rotate("+(dx/18)+"deg)";
+    if(!moved)return;c.style.transform="translateX("+dx+"px) rotate("+(dx/18)+"deg)";
     const a=Math.abs(dx)<4?0:Math.min(1,Math.hypot(dx,dy)/90);sk.style.opacity=dx>0?a:0;su.style.opacity=dx<0?a:0});
   const end=e=>{if(x0===null||e.pointerId!==pid)return;x0=null;
     if(moved&&Math.hypot(dx,dy)>70&&Math.abs(dx)>=4){fly(dx>0?"k":"u");return}
@@ -1067,7 +1104,7 @@ function fly(r){
 document.addEventListener("click",e=>{
   if(suppressClick){suppressClick=false;e.preventDefault();e.stopPropagation();return}
   const b=e.target.closest("button");if(!b)return;const D=b.dataset;
-  if(D.tab){tab=D.tab;flipped=false;render();scrollTo(0,0);return}
+  if(D.tab){tab=D.tab;flipped=false;render();toTop();return}
   if(D.fav){e.preventDefault();e.stopPropagation();const[k,id]=D.fav.split(":");if(S.fav[k][id]){delete S.fav[k][id];toast("已取消收藏")}else{S.fav[k][id]=1;toast("已加入收藏夾")}save();render();return}
   if(D.say){e.stopPropagation();speak(D.say);return}
   if(D.pick){pick(D.pick);return}
@@ -1178,16 +1215,18 @@ function fbLogin(){
   const pr=new firebase.auth.GoogleAuthProvider();pr.setCustomParameters({prompt:"select_account"});
   firebase.auth().signInWithPopup(pr).catch(e=>{const c=e.code||"";if(/popup-blocked|operation-not-supported|web-storage/.test(c))firebase.auth().signInWithRedirect(pr);else if(!/popup-closed|cancelled-popup/.test(c))toast("登入失敗："+c)});
 }
-function fbLogout(){if(fbReady()){flush();firebase.auth().signOut()}}
+function fbLogout(){if(fbReady()){flush();setLastUid("");firebase.auth().signOut()}}
 function initFirebase(){
   if(!window.FIREBASE_CONFIG||!window.firebase){setSync("local");return}
   try{firebase.initializeApp(FIREBASE_CONFIG)}catch(e){setSync("local");toast("Google 登入設定有誤");return}
   const fs=firebase.firestore();
   firebase.auth().getRedirectResult().catch(e=>toast("登入失敗："+(e.code||"")));
-  firebase.auth().onAuthStateChanged(async u=>{
-    fbUser=u;
+  let nullTimer=null;
+  const applyUser=async u=>{
+    fbUser=u;fbAuthKnown=true;
     if(u){
-      switchStore("daily-english-"+u.uid);
+      setLastUid(u.uid);
+      if(LS!=="daily-english-"+u.uid)switchStore("daily-english-"+u.uid);
       col=fs.collection("users").doc(u.uid).collection("data");
       await loadRemote();
       // progress made before the first login moves into this account once
@@ -1195,10 +1234,17 @@ function initFirebase(){
       if(loc&&loc.u){mergeIn({S:loc});try{localStorage.removeItem("daily-english-local")}catch(_){}}
     }else{col=null;switchStore("daily-english-local");setSync("login")}
     render();
+  };
+  firebase.auth().onAuthStateChanged(u=>{
+    clearTimeout(nullTimer);
+    // iPhone home-screen apps sometimes report "logged out" for a moment before the saved login loads
+    if(!u&&lastUid()){nullTimer=setTimeout(()=>{const cu=firebase.auth().currentUser;if(cu)applyUser(cu);else{setLastUid("");applyUser(null)}},4000);return}
+    applyUser(u);
   });
 }
 
 (async()=>{
+  if(STANDALONE&&lastUid())switchStore("daily-english-"+lastUid());
   render();
   if(STANDALONE){initFirebase();return}
   try{
