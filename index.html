@@ -39,8 +39,9 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}}
 :root[data-theme="dark"]{color-scheme:dark}
-*{box-sizing:border-box;touch-action:pan-x pan-y}
-html{touch-action:pan-x pan-y;-webkit-text-size-adjust:100%;height:var(--apph,100%);box-sizing:border-box;overflow:hidden;overscroll-behavior:none}
+*{box-sizing:border-box}
+.stage *{touch-action:none}
+html{touch-action:manipulation;-webkit-text-size-adjust:100%;height:var(--apph,100%);box-sizing:border-box;overflow:hidden;overscroll-behavior:none}
 body{height:100%;overflow:hidden;overscroll-behavior:none;display:flex;flex-direction:column}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;padding-inline:0;padding-block:0}
 button{font:inherit;color:inherit;cursor:pointer}
@@ -465,7 +466,7 @@ const INT={1:1,2:2,3:4,4:7,5:15};
 const STANDALONE=!!window.STANDALONE_BUILD;
 let LS=STANDALONE?"daily-english-local":"shopfloor-english-v1";
 let fbUser=null,fbAuthKnown=false;
-const APP_VER="10/07-f";
+const APP_VER="10/07-g";
 const LASTUID="daily-english-lastuid";
 function lastUid(){try{return localStorage.getItem(LASTUID)||""}catch(_){return ""}}
 function setLastUid(u){try{u?localStorage.setItem(LASTUID,u):localStorage.removeItem(LASTUID)}catch(_){}}
