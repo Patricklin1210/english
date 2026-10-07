@@ -1,11 +1,11 @@
 // network first: new versions arrive whenever you are online; the cached copy keeps it working offline
-const C="daily-english-v6";
+const C="daily-english-v7";
 const OK=[location.origin,"https://www.gstatic.com","https://fonts.googleapis.com","https://fonts.gstatic.com"];
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(["./","index.html","firebase-config.js","manifest.webmanifest","icon-192.png","icon-512.png","apple-touch-icon.png"])).catch(()=>{}))});
 self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener("fetch",e=>{
   const req=e.request,u=new URL(req.url);
-  if(req.method!=="GET"||!OK.includes(u.origin)||u.pathname.startsWith("/__/"))return;
+  if(req.method!=="GET"||!OK.includes(u.origin)||u.pathname.startsWith("/__/")||u.searchParams.has("check"))return;
   // opening the app: when online, let the phone load the page by itself exactly like a normal website
   // (no service-worker involvement at all); the saved copy is used only when there is no network
   if(req.mode==="navigate"){if(navigator.onLine!==false)return;e.respondWith(caches.match("index.html").then(m=>m||caches.match("./")).then(m=>m||fetch(req)));return}

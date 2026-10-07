@@ -465,7 +465,7 @@ const INT={1:1,2:2,3:4,4:7,5:15};
 const STANDALONE=!!window.STANDALONE_BUILD;
 let LS=STANDALONE?"daily-english-local":"shopfloor-english-v1";
 let fbUser=null,fbAuthKnown=false;
-const APP_VER="10/07-e";
+const APP_VER="10/07-f";
 const LASTUID="daily-english-lastuid";
 function lastUid(){try{return localStorage.getItem(LASTUID)||""}catch(_){return ""}}
 function setLastUid(u){try{u?localStorage.setItem(LASTUID,u):localStorage.removeItem(LASTUID)}catch(_){}}
@@ -1059,6 +1059,22 @@ if(window.visualViewport)visualViewport.addEventListener("resize",fitNav);
 ["gesturestart","gesturechange","gestureend"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
 document.addEventListener("dblclick",e=>e.preventDefault(),{passive:false});
 ["touchstart","touchmove"].forEach(ev=>document.addEventListener(ev,e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false}));
+// auto-update: phones keep an old copy of the page for a while, so ask the site for the newest version number
+// and reload with a fresh address when it changed (at most once per new version)
+let updChecking=false;
+async function checkUpdate(){
+  if(!STANDALONE||location.protocol!=="https:"||updChecking)return;updChecking=true;
+  try{
+    const r=await fetch("index.html?check="+Date.now(),{cache:"no-store"});if(!r.ok)return;
+    const m=(await r.text()).match(/const APP_VER="([^"]+)"/);
+    if(m&&m[1]!==APP_VER){
+      const k="daily-english-upd-"+m[1];let tried=false;try{tried=sessionStorage.getItem(k)==="1";sessionStorage.setItem(k,"1")}catch(_){}
+      if(!tried){try{flush()}catch(_){}setTimeout(()=>location.replace(location.pathname+"?v="+encodeURIComponent(m[1])),300)}
+    }
+  }catch(_){}finally{updChecking=false}
+}
+setTimeout(checkUpdate,1500);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate()});
 function toTop(){const v=document.getElementById("view");if(v)v.scrollTop=0}
 function render(){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===tab?"page":"false"));
